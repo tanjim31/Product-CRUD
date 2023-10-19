@@ -1,4 +1,4 @@
-import { getEmployee } from "@/services/employee.service";
+import { getEmployee, deleteProduct } from "@/services/employee.service";
 import Link from "next/link";
 import { Table } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
@@ -18,8 +18,21 @@ const Employee = () => {
             setPageCount(Math.ceil(getAllData.total / limit));
         };
         getData();
-    }, []);
+    }, [limit, data]);
     console.log(pageCount)
+
+    const handleDelete = async (id) => {
+        const confirm = window.confirm("Are you sure to delete this country?")
+        if (confirm) {
+            try {
+                await deleteProduct(id);
+            } catch (error) {
+                console.error('Error deleting country:', error);
+            }
+        }
+    };
+
+
   return (
     <div>
      <div className="emp-bg">
@@ -89,8 +102,8 @@ const Employee = () => {
                                                         <td> {da.countryId} </td>
                                                      
                                                         <td>
-                                                            <Link href={`emp/edit/${da.id}`} className='btn btn-sm me-3 btn-success'> Edit</Link>
-                                                            <Link href={`emp/details/${da.id}`} className='btn btn-sm me-3 btn-primary'> Details </Link>
+                                                            <Link href={`employee/edit/${da.id}`} className='btn btn-sm me-3 btn-success'> Edit</Link>
+                                                            <Link href={`employee/details/${da.id}`} className='btn btn-sm me-3 btn-primary'> Details </Link>
                                                             <Button
                                                                 className='btn btn-sm btn-danger'
                                                                 onClick={() => handleDelete(da.id)}
